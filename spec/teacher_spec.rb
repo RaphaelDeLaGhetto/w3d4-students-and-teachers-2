@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe Teacher do
   before(:all) do
-    raise RuntimeError, "be sure to run 'rake db:migrate' before running these specs" unless ActiveRecord::Base.connection.table_exists?(:students)
+    raise RuntimeError, "be sure to run 'rake db:migrate' before running these specs" unless ActiveRecord::Base.connection.table_exists?(:teachers)
   end
 
   context 'validations' do
