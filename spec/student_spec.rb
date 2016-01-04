@@ -75,6 +75,20 @@ describe Student do
       )
       expect(@student).to_not be_valid
     end
+
+    it "shouldn't allow two students with the same email" do
+      Student.create!(
+        birthday: @student.birthday,
+        email: @student.email,
+        phone: @student.phone
+      )
+      expect(@student).to_not be_valid
+    end
+
+    it "won't register a student to a retired teacher" do
+      @student.teacher = Teacher.create!(hire_date: Date.yesterday, retirement_date: Date.today)
+      expect(@student).to_not be_valid
+    end
   end
   
   context 'callbacks' do
