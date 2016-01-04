@@ -76,4 +76,28 @@ describe Student do
       expect(@student).to_not be_valid
     end
   end
+  
+  context 'callbacks' do
+    before(:each) do
+      @teacher = Teacher.create
+
+      @student = Student.new(
+        first_name: 'Kreay',
+        last_name: 'Shawn',
+        birthday: Date.new(1989, 9, 24),
+        gender: 'female',
+        email: 'kreayshawn@oaklandhiphop.net',
+        phone: '(510) 555-1212 x4567'
+      )
+    end
+
+    it "updates last_student_added_at field in the new student's teacher record" do
+      expect(@teacher.last_student_added_at).to eq(nil)
+
+      @student.teacher = @teacher
+      @student.save
+
+      expect(@teacher.last_student_added_at).to eq(Date.today)
+    end
+  end
 end

@@ -4,6 +4,7 @@ class Student < ActiveRecord::Base
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates_uniqueness_of :email
   validate :must_be_age_of_majority
+  after_save :notify_teacher, if: :teacher
 
   def name
     "#{first_name} #{last_name}"
@@ -17,5 +18,10 @@ class Student < ActiveRecord::Base
   private
     def must_be_age_of_majority
       errors.add(:birthday, "that student is too young") if age < 17
+    end
+
+    def notify_teacher
+      teacher.last_student_added_at = Date.today
+      teacher.save
     end
 end
